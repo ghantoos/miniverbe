@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/miniverbe/static/css/main.b9ca091c.css",
+    "main.js": "/miniverbe/static/js/main.bb0c1dad.js",
+    "index.html": "/miniverbe/index.html",
+    "main.b9ca091c.css.map": "/miniverbe/static/css/main.b9ca091c.css.map",
+    "main.bb0c1dad.js.map": "/miniverbe/static/js/main.bb0c1dad.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b9ca091c.css",
+    "static/js/main.bb0c1dad.js"
+  ]
+}
