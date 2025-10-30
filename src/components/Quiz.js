@@ -37,12 +37,18 @@ export default function Quiz({ settings, onFinish }) {
 
   const newQuestion = () => {
     const q = generateQuestion(settings);
+    if (!q.full) {
+        setFeedback("⚠️ Conjugaison introuvable pour ce verbe, question sautée.");
+        setTimeout(() => setIndex((i) => i + 1), 1000);
+        return;
+    }
     setQuestion(q);
     setInput("");
     setFeedback("");
     setTimeLeft(settings.timer);
     setStartTs(Date.now());
-  };
+    };
+
 
   const pushAndAdvance = (entry, wasCorrect) => {
     const newHistory = [...history, entry];

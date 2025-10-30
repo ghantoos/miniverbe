@@ -1,12 +1,31 @@
-// Uses french-verbs-lefff when available; falls back to simple rules for regular -er and -ir (2e groupe)
-let lefff = null;
-try { lefff = require("french-verbs-lefff"); } catch (_) { lefff = null; }
+// Vérifie si un verbe existe dans la base (BANK_G1, BANK_G2, BANK_G3, et lefff si dispo)
+export function isKnownVerb(verb) {
+  const v = strip(verb);
+  if (!v) return false;
+  if (
+    BANK_G1.map(strip).includes(v) ||
+    BANK_G2.map(strip).includes(v) ||
+    BANK_G3.map(strip).includes(v)
+  ) return true;
+  if (conjugator && typeof conjugator.conjugate === "function") {
+    try {
+      // conjugator.conjugate renvoie null/undefined si inconnu
+      return !!conjugator.conjugate(v, "present", "je");
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
+// Uses conjugation-fr when available; falls back to simple rules for regular -er and -ir (2e groupe)
+let conjugator = null;
+try { conjugator = require("conjugation-fr"); } catch (_) { conjugator = null; }
 
 export const TENSES = {
-  present: ["PRESENT", "Présent", "present"],
-  imparfait: ["IMPARFAIT", "Imparfait", "imparfait"],
-  futur: ["FUTUR", "Futur", "futur"],
-  passeCompose: ["PASSE_COMPOSE", "Passé composé", "passeCompose"],
+  present: ["present", "Présent", "present"],
+  imparfait: ["imparfait", "Imparfait", "imparfait"],
+  futur: ["futur", "Futur", "futur"],
+  passeCompose: ["passeCompose", "Passé composé", "passeCompose"],
 };
 
 export const tenseLabel = (key) => ({
@@ -62,13 +81,13 @@ function conjFallback(verb, tense, person) {
 }
 
 function conjugate(verb, tenseKey, personIndex) {
-  if (lefff && typeof lefff.getConjugation === "function") {
-    for (const k of (TENSES[tenseKey] || [])) {
-      try {
-        const f = lefff.getConjugation(verb, k, personIndex);
-        if (f) return f;
-      } catch (_) {}
-    }
+  if (conjugator && typeof conjugator.conjugate === "function") {
+    try {
+      const pronouns = ["je", "tu", "il", "nous", "vous", "ils"];
+      const pronoun = pronouns[personIndex] || "je";
+      const result = conjugator.conjugate(verb, tenseKey, pronoun);
+      if (result && typeof result === "string") return result;
+    } catch (_) {}
   }
   return conjFallback(verb, tenseKey, personIndex);
 }
@@ -90,13 +109,17 @@ function extractEnding(verb, tenseKey, full) {
 }
 
 export function generateQuestion(settings) {
-  const { customVerb, groups, tense, quizType } = settings;
-  const pool = [];
-  if (groups.includes("g1")) pool.push(...BANK_G1);
-  if (groups.includes("g2")) pool.push(...BANK_G2);
-  if (groups.includes("g3")) pool.push(...BANK_G3);
-  if (customVerb && customVerb.trim()) pool.push(customVerb.trim());
-  if (!pool.length) pool.push(...BANK_G1);
+  const { customVerbs, customVerb, groups, tense, quizType } = settings;
+  let pool = [];
+  if (Array.isArray(customVerbs) && customVerbs.length > 0) {
+    pool = customVerbs;
+  } else {
+    if (groups.includes("g1")) pool.push(...BANK_G1);
+    if (groups.includes("g2")) pool.push(...BANK_G2);
+    if (groups.includes("g3")) pool.push(...BANK_G3);
+    if (customVerb && customVerb.trim()) pool.push(customVerb.trim());
+    if (!pool.length) pool.push(...BANK_G1);
+  }
 
   const pronoun = rand(PRONOUNS8);
   const person = pronounToPersonIndex(pronoun);
