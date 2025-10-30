@@ -1,0 +1,184 @@
+/* 🎨 MiniMath Theme Colors (Updated Palette) */
+:root {
+    --mm-blue: #2d4059; /* navy blue */
+    --mm-blue-dark: #223143; /* slightly darker */
+    --mm-red: #ea5455; /* coral red */
+    --mm-red-dark: #d13e3e; /* darker red for hover */
+    --mm-orange: #f07b3f; /* orange (used for success / accent) */
+    --mm-orange-dark: #d96a34; /* darker orange */
+    --mm-yellow: #ffd460; /* soft yellow */
+    --mm-yellow-dark: #e6bb52; /* darker yellow for hover */
+    --mm-light: #fffaf3; /* light background tone */
+    --mm-dark: #2b2b2b;
+    --mm-dark-darker: #1e1e1e;
+}
+
+body {
+    background-color: var(--mm-light);
+    color: var(--mm-dark);
+}
+
+.btn-primary {
+    background-color: var(--mm-blue);
+    border-color: var(--mm-blue);
+    color: #fff;
+    transition: background-color .2s ease, border-color .2s ease;
+    --bs-btn-active-bg: var(--mm-blue-dark);
+    --bs-btn-active-border-color: var(--mm-blue-dark);
+    --bs-btn-active-color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:active {
+    background-color: var(--mm-blue-dark);
+    border-color: var(--mm-blue-dark);
+}
+.btn-outline-primary {
+    color: #616a74;
+    border-color: var(--mm-blue);
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    --bs-btn-active-bg: rgba(34,49,67,.15);
+    --bs-btn-active-border-color: var(--mm-blue-dark);
+    --bs-btn-active-color: var(--mm-blue-dark);
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+    background-color: rgba(45,64,89,.10);
+    border-color: var(--mm-blue-dark);
+    color: var(--mm-blue);
+}
+
+.btn-warning {
+    background-color: var(--mm-yellow);
+    border-color: var(--mm-yellow);
+    color: var(--mm-dark);
+    font-weight: 600;
+    transition: background-color .2s ease, border-color .2s ease;
+    --bs-btn-active-bg: var(--mm-yellow-dark);
+    --bs-btn-active-border-color: var(--mm-yellow-dark);
+    --bs-btn-active-color: var(--mm-dark);
+}
+.btn-warning:hover,
+.btn-warning:active {
+    background-color: var(--mm-yellow-dark);
+    border-color: var(--mm-yellow-dark);
+}
+.btn-outline-warning {
+    color: #616a74;
+    border-color: var(--mm-yellow);
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    --bs-btn-active-bg: rgba(255,212,96,.20);
+    --bs-btn-active-border-color: var(--mm-yellow-dark);
+    --bs-btn-active-color: var(--mm-dark);
+}
+.btn-outline-warning:hover,
+.btn-outline-warning:active {
+    background-color: rgba(255,212,96,.20);
+    border-color: var(--mm-yellow-dark);
+    color: var(--mm-dark);
+}
+
+.btn-success {
+    background-color: var(--mm-orange);
+    border-color: var(--mm-orange);
+    color: #fff;
+    transition: background-color .2s ease, border-color .2s ease;
+    --bs-btn-active-bg: var(--mm-orange-dark);
+    --bs-btn-active-border-color: var(--mm-orange-dark);
+    --bs-btn-active-color: #fff;
+}
+.btn-success:hover,
+.btn-success:active {
+    background-color: var(--mm-orange-dark);
+    border-color: var(--mm-orange-dark);
+}
+.btn-outline-success {
+    color: var(--mm-dark);
+    border-color: var(--mm-orange);
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+    --bs-btn-active-bg: rgba(240,123,63,.15);
+    --bs-btn-active-border-color: var(--mm-orange-dark);
+    --bs-btn-active-color: var(--mm-dark);
+}
+.btn-outline-success:hover,
+.btn-outline-success:active {
+    background-color: rgba(240,123,63,.15);
+    border-color: var(--mm-orange-dark);
+    color: var(--mm-dark);
+}
+
+.btn-dark {
+    background-color: var(--mm-dark);
+    border-color: var(--mm-dark);
+    color: #fff;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+.btn-dark:hover,
+.btn-dark:active {
+    background-color: var(--mm-dark-darker);
+    border-color: var(--mm-dark-darker);
+}
+.btn-outline-dark {
+    color: var(--mm-dark);
+    border-color: var(--mm-dark);
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.btn-outline-dark:hover,
+.btn-outline-dark:active {
+    background-color: rgba(43,43,43,.10);
+    border-color: var(--mm-dark-darker);
+    color: var(--mm-dark);
+}
+
+.bg-info {
+    background-color: var(--mm-blue) !important;
+}
+.bg-warning {
+    background-color: var(--mm-yellow) !important;
+}
+.bg-success {
+    background-color: var(--mm-orange) !important;
+}
+.bg-dark {
+    background-color: var(--mm-dark) !important;
+}
+
+.card {
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+@media (max-width: 576px) {
+    .btn {
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        border-radius: .2rem;
+    }
+    .btn-lg {
+        padding: .5rem 1rem;
+        font-size: 1rem;
+        border-radius: .3rem;
+    }
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn.focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .btn-outline-primary:hover,
+    .btn-outline-primary:active,
+    .btn-outline-warning:hover,
+    .btn-outline-warning:active,
+    .btn-outline-success:hover,
+    .btn-outline-success:active,
+    .btn-outline-dark:hover,
+    .btn-outline-dark:active {
+        background-color: inherit !important;
+        color: inherit !important;
+        border-color: inherit !important;
+    }
+}

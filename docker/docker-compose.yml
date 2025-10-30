@@ -1,0 +1,11 @@
+services:
+  math-trainer:
+    container_name: miniverbe
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "9998:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
