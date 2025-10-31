@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:20-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -8,7 +8,7 @@ RUN npm run build
 
 
 # Stage 2: Serve
-FROM nginx:1.27-alpine
+FROM nginx:mainline-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80

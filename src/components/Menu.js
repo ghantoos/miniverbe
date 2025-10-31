@@ -3,9 +3,9 @@ import ModalAlert from "../utils/alert";
 import { isKnownVerb } from "../utils/questionGenerator";
 
 const TENSES = [
-  { key: "present", label: "Indicatif — Présent" },
-  { key: "imparfait", label: "Indicatif — Imparfait" },
-  { key: "futur", label: "Indicatif — Futur simple" },
+  { key: "present", label: "Indicatif/Présent" },
+  { key: "imparfait", label: "Indicatif/Imparfait" },
+  { key: "futur", label: "Indicatif/Futur simple" },
   // { key: "passeCompose", label: "Indicatif — Passé composé" }, // ❌ non pris en charge par conjugation-fr
 ];
 

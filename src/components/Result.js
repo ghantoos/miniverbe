@@ -23,6 +23,24 @@ export default function Result({ score, total, onRestart, history = [] }) {
     if (percentage === 100) launchFireworks(total);
   }, [percentage, total]);
 
+  // 🧩 Highlight conjugated verb (green/red)
+  const renderLine = (item) => {
+    const pronoun =
+        item.pronoun && item.pronoun.length
+        ? item.pronoun.charAt(0).toUpperCase() + item.pronoun.slice(1)
+        : "";
+    const highlighted = `<strong class="${
+        item.correct ? "text-success" : "text-danger"
+    }">${item.right || ""}</strong>`;
+    const tense = item.tense || "";
+    const answered =
+        !item.correct && item.user
+        ? ` <span>(répondu : ${item.user})</span>`
+        : "";
+    // ✅ Simplified and clean: Elle chante (répondu: asd) — Indicatif/Présent
+    return `${pronoun} ${highlighted}${answered} — ${tense}`;
+  };
+
   return (
     <div className="card p-4 text-center shadow-sm">
       <h2>🎯 Résultat : {percentage}%</h2>
@@ -44,12 +62,11 @@ export default function Result({ score, total, onRestart, history = [] }) {
                     : "list-group-item-danger"
                 }`}
               >
-                <span>
-                  {item.q}
-                  {!item.correct && item.user
-                    ? ` (répondu : ${item.user})`
-                    : ""}
-                </span>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: renderLine(item),
+                  }}
+                />
                 <span className="text-muted small">{item.time}s</span>
               </li>
             ))}

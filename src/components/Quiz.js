@@ -73,6 +73,9 @@ export default function Quiz({ settings, onFinish }) {
 
     const entry = {
       q: `${question.pronoun} ${question.verb} — ${tenseLabel(question.tense)}${settings.quizType === "ending" ? " [terminaison]" : ""}`,
+      pronoun: question.pronoun,
+      verb: question.verb,
+      tense: tenseLabel(question.tense),
       correct: ok,
       user: given || null,
       right: question.full,
@@ -93,6 +96,9 @@ export default function Quiz({ settings, onFinish }) {
     const duration = ((Date.now() - startTs) / 1000).toFixed(1);
     const entry = {
       q: `${question.pronoun} ${question.verb} — ${tenseLabel(question.tense)}${settings.quizType === "ending" ? " [terminaison]" : ""}`,
+      pronoun: question.pronoun,
+      verb: question.verb,
+      tense: tenseLabel(question.tense),
       correct: false,
       user: null,
       right: question.full,

@@ -29,10 +29,10 @@ export const TENSES = {
 };
 
 export const tenseLabel = (key) => ({
-  present: "Indicatif — Présent",
-  imparfait: "Indicatif — Imparfait",
-  futur: "Indicatif — Futur simple",
-  passeCompose: "Indicatif — Passé composé",
+  present: "Indicatif/Présent",
+  imparfait: "Indicatif/Imparfait",
+  futur: "Indicatif/Futur simple",
+  passeCompose: "Indicatif/Passé composé",
 }[key] || key);
 
 const PRONOUNS8 = ["je", "tu", "il", "elle", "nous", "vous", "ils", "elles"];
