@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import ModalAlert from "../utils/alert";
-import { isKnownVerb } from "../utils/questionGenerator";
-
-const TENSES = [
-  { key: "present", label: "Indicatif/Présent" },
-  { key: "imparfait", label: "Indicatif/Imparfait" },
-  { key: "futur", label: "Indicatif/Futur simple" },
-  // { key: "passeCompose", label: "Indicatif — Passé composé" }, // ❌ non pris en charge par conjugation-fr
-];
+import { isKnownVerb, TENSES } from "../utils/questionGenerator";
 
 const GROUPS = [
   { key: "g1", label: "1er groupe (-er)" },
@@ -20,7 +13,7 @@ export default function Menu({ onStart }) {
   const [customVerbs, setCustomVerbs] = useState([]); // tableau de verbes validés
   const [inputError, setInputError] = useState("");
   const [groups, setGroups] = useState(["g1"]);
-  const [tense, setTense] = useState("present");
+  const [tense, setTense] = useState("indicative/present");
   const [quizType, setQuizType] = useState("full");
   const [totalQuestions, setTotalQuestions] = useState(10);
   const [timer, setTimer] = useState(60);
@@ -80,7 +73,7 @@ export default function Menu({ onStart }) {
     <div className="card p-4 shadow-sm">
       <h5 className="mb-3">⚙️ Paramètres</h5>
 
-      {/* 🔹 Verbes personnalisés (Outlook style) */}
+      {/* 🔹 Verbes personnalisés */}
       <div className="mb-3">
         <label className="form-label">Ajouter un ou plusieurs verbes</label>
         <div className="d-flex flex-wrap align-items-center mb-2" style={{ gap: "0.5em" }}>
@@ -127,7 +120,9 @@ export default function Menu({ onStart }) {
             {g.label}
           </button>
         ))}
-        <div className="form-text">Vous pouvez en choisir plusieurs. (Désactivé si des verbes personnalisés sont ajoutés)</div>
+        <div className="form-text">
+          Vous pouvez en choisir plusieurs. (Désactivé si des verbes personnalisés sont ajoutés)
+        </div>
       </div>
 
       {/* 🔹 Temps et type de quiz */}
@@ -139,10 +134,8 @@ export default function Menu({ onStart }) {
             value={tense}
             onChange={(e) => setTense(e.target.value)}
           >
-            {TENSES.map((t) => (
-              <option key={t.key} value={t.key}>
-                {t.label}
-              </option>
+            {Object.entries(TENSES).map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
             ))}
           </select>
         </div>

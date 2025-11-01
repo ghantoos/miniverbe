@@ -49,7 +49,6 @@ export default function Quiz({ settings, onFinish }) {
     setStartTs(Date.now());
     };
 
-
   const pushAndAdvance = (entry, wasCorrect) => {
     const newHistory = [...history, entry];
     const newScore = score + (wasCorrect ? 1 : 0);
@@ -72,6 +71,7 @@ export default function Quiz({ settings, onFinish }) {
     const duration = ((Date.now() - startTs) / 1000).toFixed(1);
 
     const entry = {
+      tenseKey: question.tense,
       q: `${question.pronoun} ${question.verb} — ${tenseLabel(question.tense)}${settings.quizType === "ending" ? " [terminaison]" : ""}`,
       pronoun: question.pronoun,
       verb: question.verb,
@@ -95,6 +95,7 @@ export default function Quiz({ settings, onFinish }) {
     if (!question) return;
     const duration = ((Date.now() - startTs) / 1000).toFixed(1);
     const entry = {
+      tenseKey: question.tense,
       q: `${question.pronoun} ${question.verb} — ${tenseLabel(question.tense)}${settings.quizType === "ending" ? " [terminaison]" : ""}`,
       pronoun: question.pronoun,
       verb: question.verb,
