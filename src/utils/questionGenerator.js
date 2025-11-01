@@ -18,7 +18,7 @@ export const TENSES = {
   "indicative/anterior-future": "Indicatif/Futur antérieur",
 
   "conditional/present": "Conditionnel/Présent",
-  "conditional/past": "Conditionnel/Passé",
+  "conditional/conditional-past": "Conditionnel/Passé",
 
   "subjunctive/present": "Subjonctif/Présent",
   "subjunctive/imperfect": "Subjonctif/Imparfait",
@@ -31,9 +31,9 @@ export const TENSES = {
   "participle/present-participle": "Participe/Présent",
   "participle/past-participle": "Participe/Passé",
 
-  "infinitive/infinitive": "Infinitif/Simple",
   "infinitive/infinitive-present": "Infinitif/Présent"
 };
+
 
 // Retourne un label propre à partir du couple mode/temps
 export const tenseLabel = (key) => TENSES[key] || key;
