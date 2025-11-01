@@ -1,4 +1,4 @@
-# MiniVerbe
+# MiniVerbe [![Netlify Status](https://api.netlify.com/api/v1/badges/20d56378-8471-462a-b25d-b64a4b6a9d02/deploy-status)](https://app.netlify.com/projects/petitlab-miniverbe/deploys)
 
 **MiniVerbe** is a simple, fun web app designed to help children practice French verb conjugation — various tenses, verbs and pronouns — through quick, interactive quizzes. Installable as a PWA and tuned for a child-friendly UX inspired by MiniMath.
 
