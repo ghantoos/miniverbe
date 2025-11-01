@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import ModalAlert from "../utils/alert";
-
-const TENSES = [
-  { key: "present", label: "Indicatif — Présent" },
-  { key: "imparfait", label: "Indicatif — Imparfait" },
-  { key: "futur", label: "Indicatif — Futur simple" },
-  { key: "passeCompose", label: "Indicatif — Passé composé" },
-];
+import { isKnownVerb, TENSES } from "../utils/questionGenerator";
 
 const GROUPS = [
   { key: "g1", label: "1er groupe (-er)" },
@@ -15,10 +9,12 @@ const GROUPS = [
 ];
 
 export default function Menu({ onStart }) {
-  const [customVerb, setCustomVerb] = useState("");
-  const [groups, setGroups] = useState(["g1"]); // sélection multiple autorisée
-  const [tense, setTense] = useState("present");
-  const [quizType, setQuizType] = useState("full"); // "full" | "ending"
+  const [inputVerb, setInputVerb] = useState("");
+  const [customVerbs, setCustomVerbs] = useState([]); // tableau de verbes validés
+  const [inputError, setInputError] = useState("");
+  const [groups, setGroups] = useState(["g1"]);
+  const [tense, setTense] = useState("indicative/present");
+  const [quizType, setQuizType] = useState("full");
   const [totalQuestions, setTotalQuestions] = useState(10);
   const [timer, setTimer] = useState(60);
   const [showModal, setShowModal] = useState(false);
@@ -29,26 +25,83 @@ export default function Menu({ onStart }) {
     );
   };
 
+  // Ajout d'un verbe à la liste après validation
+  const handleAddVerb = (raw) => {
+    const candidates = raw.split(",").map(v => v.trim()).filter(Boolean);
+    let error = "";
+    let added = false;
+    candidates.forEach((verb) => {
+      if (!verb) return;
+      if (customVerbs.includes(verb)) return;
+      if (isKnownVerb(verb)) {
+        setCustomVerbs((prev) => [...prev, verb]);
+        added = true;
+      } else {
+        error = error ? error + ", " + verb : verb;
+      }
+    });
+    setInputError(error ? `Verbe inconnu : ${error}` : "");
+    if (added) setInputVerb("");
+  };
+
+  // Suppression d'un verbe de la liste
+  const handleRemoveVerb = (verb) => {
+    setCustomVerbs((prev) => prev.filter((v) => v !== verb));
+  };
+
+  // Ajout par touche Entrée ou virgule
+  const handleInputKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      handleAddVerb(inputVerb);
+    }
+  };
+
   const handleSubmit = () => {
-    if (!groups.length) return setShowModal(true);
-    onStart({ customVerb, groups, tense, quizType, totalQuestions, timer });
+    if (!customVerbs.length && !groups.length) return setShowModal(true);
+    onStart({
+      customVerbs: customVerbs.length ? customVerbs : undefined,
+      groups: customVerbs.length ? [] : groups,
+      tense,
+      quizType,
+      totalQuestions,
+      timer,
+    });
   };
 
   return (
     <div className="card p-4 shadow-sm">
       <h5 className="mb-3">⚙️ Paramètres</h5>
 
-      {/* 🔹 Verbe personnalisé */}
+      {/* 🔹 Verbes personnalisés */}
       <div className="mb-3">
-        <label className="form-label">Ajouter un verbe (optionnel)</label>
-        <input
-          className="form-control"
-          placeholder="ex : parler, finir, aller…"
-          value={customVerb}
-          onChange={(e) => setCustomVerb(e.target.value)}
-        />
+        <label className="form-label">Ajouter un ou plusieurs verbes</label>
+        <div className="d-flex flex-wrap align-items-center mb-2" style={{ gap: "0.5em" }}>
+          {customVerbs.map((verb) => (
+            <span key={verb} className="badge bg-primary text-light px-2 py-1 me-1">
+              {verb}
+              <button
+                type="button"
+                className="btn-close btn-close-white btn-sm ms-2"
+                aria-label="Supprimer"
+                style={{ fontSize: "0.7em" }}
+                onClick={() => handleRemoveVerb(verb)}
+              />
+            </span>
+          ))}
+          <input
+            className="form-control border-0 flex-grow-1"
+            style={{ minWidth: 120, boxShadow: "none" }}
+            placeholder="ex : parler, finir, aller…"
+            value={inputVerb}
+            onChange={(e) => setInputVerb(e.target.value)}
+            onKeyDown={handleInputKeyDown}
+            onBlur={() => inputVerb && handleAddVerb(inputVerb)}
+          />
+        </div>
+        {inputError && <div className="text-danger small">{inputError}</div>}
         <div className="form-text">
-          Il sera ajouté au tirage aléatoire du quiz.
+          Saisissez un verbe puis Entrée ou virgule. Seuls les verbes connus sont acceptés.
         </div>
       </div>
 
@@ -62,11 +115,14 @@ export default function Menu({ onStart }) {
               groups.includes(g.key) ? "btn-primary" : "btn-outline-primary"
             }`}
             onClick={() => toggleGroup(g.key)}
+            disabled={customVerbs.length > 0}
           >
             {g.label}
           </button>
         ))}
-        <div className="form-text">Vous pouvez en choisir plusieurs.</div>
+        <div className="form-text">
+          Vous pouvez en choisir plusieurs. (Désactivé si des verbes personnalisés sont ajoutés)
+        </div>
       </div>
 
       {/* 🔹 Temps et type de quiz */}
@@ -78,10 +134,8 @@ export default function Menu({ onStart }) {
             value={tense}
             onChange={(e) => setTense(e.target.value)}
           >
-            {TENSES.map((t) => (
-              <option key={t.key} value={t.key}>
-                {t.label}
-              </option>
+            {Object.entries(TENSES).map(([key, label]) => (
+              <option key={key} value={key}>{label}</option>
             ))}
           </select>
         </div>

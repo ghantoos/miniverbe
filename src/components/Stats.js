@@ -5,18 +5,19 @@ export default function Stats({ history = [] }) {
   const { byPronoun, byTense } = useMemo(() => {
     const p = {}, t = {};
     const add = (map, key, ok) => {
-      if (!map[key]) map[key] = { total: 0, ok: 0 };
-      map[key].total++;
-      if (ok) map[key].ok++;
+        if (!map[key]) map[key] = { total: 0, ok: 0 };
+        map[key].total++;
+        if (ok) map[key].ok++;
     };
     history.forEach((h) => {
-      const pronoun = (h.q.split(" ")[0] || "?").trim();
-      const tense = (h.q.split("—")[1] || "?").replace(/\[terminaison\]/, "").trim();
-      add(p, pronoun, h.correct);
-      add(t, tense, h.correct);
+        const pronoun = h.pronoun || "?";
+        const tense = h.tense || "?";
+        add(p, pronoun, h.correct);
+        add(t, tense, h.correct);
     });
     return { byPronoun: p, byTense: t };
   }, [history]);
+
 
   const render = (map) =>
     Object.entries(map).map(([k, v], i) => {
